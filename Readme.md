@@ -1,10 +1,11 @@
 # AWS Lambda HTTP Handler Shim
 
 This software is based, in part, on the work done by [eawsy](http://github.com/eawsy/aws-lambda-go/) 
- Their terrific idea was to use the Python 2.7 runtime available in [AWS Lamnda](https://aws.amazon.com/lambda/)
+ Their terrific idea was to use the Python 2.7 runtime available in [AWS Lambda](https://aws.amazon.com/lambda/)
  to run [go](http://golang.com) programs.  I was in the midst of creating a new API using [goa](http://goa.design)
- and it dawned on me that if I could somehow trick goa into responding to [AWS Api Gateway](https://aws.amazon.com/api-gateway/)
- I could have a service that could both run standalone and serverless on API Gateway and Lambnda.
+ and it dawned on me that if I could somehow trick goa into responding to 
+ [AWS Api Gateway](https://aws.amazon.com/api-gateway/) requests, I could have a service that could both run standalone 
+ and serverless on AWS's API Gateway and Lambda.
 
 So I created this.
 
