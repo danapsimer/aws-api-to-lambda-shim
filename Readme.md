@@ -1,4 +1,4 @@
-# AWS Lambda HTTP Handler Shim
+# AWS API Gateway to Lambda Shim using [http.Handler](https://golang.org/pkg/net/http/#Handler)
 
 This software is based, in part, on the work done by [eawsy](http://github.com/eawsy/aws-lambda-go/) 
  Their terrific idea was to use the Python 2.7 runtime available in [AWS Lambda](https://aws.amazon.com/lambda/)
