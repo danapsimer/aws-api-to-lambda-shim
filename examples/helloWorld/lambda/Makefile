@@ -13,13 +13,13 @@ pack:
 dbuild:
 	@docker run --rm \
 		-v $(GOPATH):/go \
-		-w /go/src/github.com/danapsimer/aws-lambda-shim/examples/helloWorld/lambda \
+		-w /go/src/github.com/danapsimer/aws-api-to-lambda-shim/examples/helloWorld/lambda \
 		eawsy/aws-lambda-go make build
 
 dpack:
 	@docker run --rm \
 		-v $(GOPATH):/go \
-		-w /go/src/github.com/danapsimer/aws-lambda-shim/examples/helloWorld/lambda \
+		-w /go/src/github.com/danapsimer/aws-api-to-lambda-shim/examples/helloWorld/lambda \
 		eawsy/aws-lambda-go make pack
 
 clean:

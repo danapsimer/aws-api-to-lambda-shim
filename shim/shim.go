@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/eawsy/aws-lambda-go/service/lambda/runtime"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -169,9 +170,10 @@ func (shim *HttpHandlerShim) handle(evt json.RawMessage, ctx *runtime.Context) (
 		log.Printf("ERROR: %s", err.Error())
 		return apiGatewayResponse{StatusCode: 500, Body: err.Error()}, nil
 	}
-	bodyReader := strings.NewReader(msg.Body)
+	var bodyReader io.Reader
+	bodyReader = strings.NewReader(msg.Body)
 	if msg.IsBase64Encoded {
-		bodyReader = base64.NewDecoder(base64.StdEncoding,bodyReader)
+		bodyReader = base64.NewDecoder(base64.StdEncoding, bodyReader)
 	}
 	//log.Printf("url parsed: %v", url)
 	httpRequest := http.Request{
