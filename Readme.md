@@ -18,23 +18,22 @@ The basic steps for usage are as follows:
 **NOTE:** you need to replace the '*${AWS_ACCOUNT_ID}*' place holder in 
  the swagger.json and the aws commands above with your account id.
  
-1. separate your configuration of your web service muxer from your call to
-  http.ListenAndServe. 
-    
+1. separate your configuration of your web service muxer from your call to http.ListenAndServe. 
+  
     ```go
     package hello
 
     import (
-      "net/http"
-      ...
+        "net/http"
+        ...
     )
  
     func InitHandler() (http.Handler, error) {
-      mux := http.NewServeMux()
-      mux.HandleFunc("/hello/", func(w http.ResponseWriter, req *http.Request) {
-        ...
-      })
-      return mux, nil
+        mux := http.NewServeMux()
+        mux.HandleFunc("/hello/", func(w http.ResponseWriter, req *http.Request) {
+          ...
+        })
+        return mux, nil
     }
     ```
 2. Create your main() for your web service: 
@@ -44,13 +43,13 @@ The basic steps for usage are as follows:
 
     import (
     	"github.com/danapsimer/aws-lambda-shim/examples/helloWorld/hello"
-	"log"
-	"net/http"
+    	"log"
+    	"net/http"
     )
 
     func main() {
-	handler, _ := hello.InitHandler()
-	log.Fatal(http.ListenAndServe(":8080", handler))
+    	handler, _ := hello.InitHandler()
+    	log.Fatal(http.ListenAndServe(":8080", handler))
     }
     ```
 3. create your main() for your lambda: 
