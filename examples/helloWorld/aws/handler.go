@@ -2,11 +2,11 @@ package main
 
 import (
 	"github.com/danapsimer/aws-api-to-lambda-shim/examples/helloWorld/hello"
-	"github.com/danapsimer/aws-api-to-lambda-shim/shim"
+	"github.com/danapsimer/aws-api-to-lambda-shim/aws"
 )
 
 func init() {
-	shim.NewHttpHandlerShim(hello.InitHandler)
+	aws.NewHttpHandlerShim(hello.InitHandler)
 }
 
 func main() {

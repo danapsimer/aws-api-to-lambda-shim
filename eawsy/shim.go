@@ -1,9 +1,10 @@
-package shim
+package eawsy
 
 import (
-	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"github.com/danapsimer/aws-api-to-lambda-shim/utils"
 	"github.com/eawsy/aws-lambda-go/service/lambda/runtime"
 	"io"
 	"io/ioutil"
@@ -11,7 +12,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"encoding/base64"
 )
 
 type ShimInitFunc func() (http.Handler, error)
@@ -78,68 +78,6 @@ type apiGatewayResponse struct {
 	Body       string            `json:"body,omitempty"`
 }
 
-type lambdaResponseWriter struct {
-	header         http.Header
-	StatusCode     int
-	ResponseBuffer bytes.Buffer
-}
-
-func NewLambdaResponseWriter() (*lambdaResponseWriter, error) {
-	return &lambdaResponseWriter{
-		header:     make(map[string][]string),
-		StatusCode: 0,
-	}, nil
-}
-
-func (w *lambdaResponseWriter) Header() http.Header {
-	return w.header
-}
-
-func (w *lambdaResponseWriter) Write(bytes []byte) (int, error) {
-	if w.StatusCode == 0 {
-		w.StatusCode = 200
-	}
-	bytesWritten, err := w.ResponseBuffer.Write(bytes)
-	return bytesWritten, err
-}
-
-func (w *lambdaResponseWriter) WriteHeader(statusCode int) {
-	w.StatusCode = statusCode
-}
-
-func queryStringParams2Values(qsp map[string]string) url.Values {
-	if qsp == nil {
-		return nil
-	}
-	values := url.Values{}
-	for k, v := range qsp {
-		values.Add(k, v)
-	}
-	return values
-}
-
-func headers2Header(headers map[string]string) http.Header {
-	if headers == nil {
-		return nil
-	}
-	values := http.Header{}
-	for k, v := range headers {
-		values.Add(k, v)
-	}
-	return values
-}
-
-func header2Headers(header http.Header) map[string]string {
-	if header == nil {
-		return nil
-	}
-	values := make(map[string]string)
-	for k, v := range header {
-		values[k] = v[0]
-	}
-	return values
-}
-
 func (shim *HttpHandlerShim) handle(evt json.RawMessage, ctx *runtime.Context) (interface{}, error) {
 	if !shim.initCalled {
 		handler, err := shim.init()
@@ -161,7 +99,7 @@ func (shim *HttpHandlerShim) handle(evt json.RawMessage, ctx *runtime.Context) (
 
 	var urlStr string
 	if len(msg.QueryStringParameters) != 0 {
-		urlStr = fmt.Sprintf("%s?%s", msg.Path, queryStringParams2Values(msg.QueryStringParameters).Encode())
+		urlStr = fmt.Sprintf("%s?%s", msg.Path, utils.QueryStringParams2Values(msg.QueryStringParameters).Encode())
 	} else {
 		urlStr = msg.Path
 	}
@@ -182,7 +120,7 @@ func (shim *HttpHandlerShim) handle(evt json.RawMessage, ctx *runtime.Context) (
 		Proto:         "HTTP/1.0",
 		ProtoMajor:    1,
 		ProtoMinor:    0,
-		Header:        headers2Header(msg.Headers),
+		Header:        utils.Headers2Header(msg.Headers),
 		Body:          ioutil.NopCloser(bodyReader),
 		ContentLength: int64(len(msg.Body)),
 		Close:         false,
@@ -191,7 +129,7 @@ func (shim *HttpHandlerShim) handle(evt json.RawMessage, ctx *runtime.Context) (
 		RequestURI:    url.String(),
 	}
 	//log.Printf("httpRequest created: %v", &httpRequest)
-	responseWriter, err := NewLambdaResponseWriter()
+	responseWriter, err := utils.NewLambdaResponseWriter()
 	if err != nil {
 		log.Printf("ERROR: %s", err.Error())
 		return apiGatewayResponse{StatusCode: 500, Body: err.Error()}, nil
@@ -207,7 +145,7 @@ func (shim *HttpHandlerShim) handle(evt json.RawMessage, ctx *runtime.Context) (
 	response := apiGatewayResponse{
 		StatusCode: int32(responseWriter.StatusCode),
 		Body:       responseBody,
-		Headers:    header2Headers(responseWriter.Header()),
+		Headers:    utils.Header2Headers(responseWriter.Header()),
 	}
 	//log.Printf("Response: %v", &response)
 	return &response, nil

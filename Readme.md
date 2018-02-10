@@ -52,7 +52,7 @@ The basic steps for usage are as follows:
     	log.Fatal(http.ListenAndServe(":8080", handler))
     }
     ```
-3. create your main() for your lambda: 
+3. create your main() for your eawsy:
 
     ```go
     package main
@@ -69,7 +69,7 @@ The basic steps for usage are as follows:
     func main() {
     }
     ```
-4. Make your lambda: 
+4. Make your eawsy:
 
     ```Makefile
     build:
@@ -80,7 +80,7 @@ The basic steps for usage are as follows:
     	zip handler.zip handler.so
     	chown `stat -c "%u:%g" .` handler.zip
     ```
-5. Create your lambda in AWS: (in the directory your lambda handler was built) 
+5. Create your eawsy in AWS: (in the directory your eawsy handler was built)
     
     ```bash
     aws lambda create-function \
