@@ -1,6 +1,7 @@
 package aws
 
 import (
+	"context"
 	"encoding/base64"
 	"fmt"
 	"github.com/aws/aws-lambda-go/events"
@@ -12,7 +13,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"context"
 )
 
 type ShimInitFunc func() (http.Handler, error)
@@ -29,13 +29,13 @@ func NewHttpHandlerShim(init ShimInitFunc) (*HttpHandlerShim, error) {
 		initCalled: false,
 		handler:    nil,
 	}
-	lambda.Start(func(ctx context.Context,evt events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	lambda.Start(func(ctx context.Context, evt events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 		return shim.handle(ctx, evt)
 	})
 	return shim, nil
 }
 
-func (shim *HttpHandlerShim) handle(ctx context.Context,request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func (shim *HttpHandlerShim) handle(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	if !shim.initCalled {
 		handler, err := shim.init()
 		if err != nil {

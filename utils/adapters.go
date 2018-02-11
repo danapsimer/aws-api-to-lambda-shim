@@ -2,8 +2,8 @@ package utils
 
 import (
 	"bytes"
-	"net/url"
 	"net/http"
+	"net/url"
 )
 
 type lambdaResponseWriter struct {
@@ -67,4 +67,3 @@ func Header2Headers(header http.Header) map[string]string {
 	}
 	return values
 }
-

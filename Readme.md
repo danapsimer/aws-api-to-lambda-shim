@@ -154,7 +154,7 @@ The basic steps for usage are as follows:
 
     import (
         "github.com/danapsimer/aws-lambda-shim/examples/helloWorld/hello"
-        "github.com/danapsimer/aws-lambda-shim/shim"
+        "github.com/danapsimer/aws-lambda-shim/eawsy"
     )
 
     func init() {
