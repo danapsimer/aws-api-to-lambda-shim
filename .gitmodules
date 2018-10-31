@@ -1,6 +1,0 @@
-[submodule "vendor/github.com/aws/aws-lambda-go"]
-	path = vendor/github.com/aws/aws-lambda-go
-	url = https://github.com/aws/aws-lambda-go
-[submodule "vendor/github.com/eawsy/aws-lambda-go"]
-	path = vendor/github.com/eawsy/aws-lambda-go
-	url = https://github.com/eawsy/aws-lambda-go

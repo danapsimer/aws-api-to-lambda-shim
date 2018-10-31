@@ -59,24 +59,7 @@ The basic steps for usage are as follows:
     	log.Fatal(http.ListenAndServe(":8080", handler))
     }
     ```
-3. create your main() for your eawsy:
-
-    ```go
-    package main
-
-    import (
-        "github.com/danapsimer/aws-lambda-shim/examples/helloWorld/hello"
-        "github.com/danapsimer/aws-lambda-shim/aws"
-    )
-
-    func init() {
-        shim.NewHttpHandlerShim(hello.InitHandler)
-    }
-
-    func main() {
-    }
-    ```
-4. Make your executable:
+3. Make your executable:
 
     ```Makefile
     build:
@@ -85,7 +68,7 @@ The basic steps for usage are as follows:
     pack:
     	zip handler.zip handler
     ```
-5. Create your lambda function in AWS: (in the directory your handler was built)
+4. Create your lambda function in AWS: (in the directory your handler was built)
 
     ```bash
     aws lambda create-function \
@@ -93,7 +76,7 @@ The basic steps for usage are as follows:
         --runtime go1.x --handler handler --zip-file fileb://handler.zip \
         --role arn:aws:iam::${AWS_ACCOUNT_ID}:role/lambda_basic_execution
     ```
-6. Create your API Gateway API:
+5. Create your API Gateway API:
 
     ```bash
     aws apigateway import-rest-api \
