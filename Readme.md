@@ -59,6 +59,19 @@ The basic steps for usage are as follows:
     	log.Fatal(http.ListenAndServe(":8080", handler))
     }
     ```
+3. create your main() for your aws:
+     ```go
+    package main
+     import (
+        "github.com/danapsimer/aws-lambda-shim/examples/helloWorld/hello"
+        "github.com/danapsimer/aws-lambda-shim/aws"
+    )
+     func init() {
+        shim.NewHttpHandlerShim(hello.InitHandler)
+    }
+     func main() {
+    }
+    ```
 3. Make your executable:
 
     ```Makefile
