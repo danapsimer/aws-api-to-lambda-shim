@@ -52,7 +52,7 @@ func (shim *HttpHandlerShim) handle(ctx context.Context, request events.APIGatew
 	} else {
 		urlStr = request.Path
 	}
-	url, err := url.ParseRequestURI(urlStr)
+	requestUrl, err := url.ParseRequestURI(urlStr)
 	if err != nil {
 		log.Printf("ERROR: %s", err.Error())
 		return events.APIGatewayProxyResponse{StatusCode: 500, Body: err.Error()}, err
@@ -64,7 +64,7 @@ func (shim *HttpHandlerShim) handle(ctx context.Context, request events.APIGatew
 	}
 	httpRequest := http.Request{
 		Method:        request.HTTPMethod,
-		URL:           url,
+		URL:           requestUrl,
 		Proto:         "HTTP/1.0",
 		ProtoMajor:    1,
 		ProtoMinor:    0,
@@ -74,7 +74,7 @@ func (shim *HttpHandlerShim) handle(ctx context.Context, request events.APIGatew
 		Close:         false,
 		Host:          request.Headers["Host"],
 		RemoteAddr:    request.Headers["Host"],
-		RequestURI:    url.String(),
+		RequestURI:    requestUrl.String(),
 	}
 	responseWriter, err := utils.NewLambdaResponseWriter()
 	if err != nil {
